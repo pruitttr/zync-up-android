@@ -1,4 +1,74 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <string name="app_name">Zync Up</string>
     <string name="title_activity_main">Zync Up</string>
+
+
+    <!--SearchBar-->
+    <string name="search_hint">Search Friends</string>
+    <string name="speak_now">Speak now</string>
+
+    <!-- Used for the AlphabetIndexer in ContactsListFragment to provide quick navigation by
+     alphabet using ListView fast scroll. -->
+    <string name="alphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+
+    <!--Accessibility-->
+    <string name="mic_description">Microphone Button</string>
+    <string name="hamburger_description">Hamburger Menu Button</string>
+
+    <!--Navigation Drawer-->
+    <string name="open_drawer">Open Drawer</string>
+    <string name="close_drawer">Close Drawer</string>
+    <string name="help_feedback">Help &amp; Feedback</string>
+    <string name="settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- Text displayed when the recipientedittextview is not focused. Displays the total number of recipients since the field is shrunk to just display a portion -->
+    <string name="more_string">\u002B<xliff:g id="count">%1$s</xliff:g></string>
+
+    <!-- Text displayed when the user long presses on a chip to copy the recipients email address.
+         [CHAR LIMIT=200] -->
+    <string name="copy_email">Copy email address</string>
+    <!-- Text displayed when the user long presses on a chip to copy the recipient's phone number.
+         [CHAR LIMIT=200] -->
+    <string name="copy_number">Copy phone number</string>
+    <!-- Text displayed in the enter key slot when the recipientedittextview has focus.
+         [CHAR LIMIT=12] -->
+    <string name="done">Zync</string>
+
+    <string name="api_key">739d9b06eae12e9a2ad264b3e7274814d95012a64ec8e003ceb548c032f89fbf</string>
+    <string name="content_type">application/json</string>
+    <string name="sandbox_true">true</string>
+
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="tagline">stay <b>safe</b>, stay <b>together</b>, \n have <b>fun</b></string>
+    <string name="title_login">Login</string>
+    <string name="title_register">Register</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_first_name">First Name</string>
+    <string name="prompt_last_name">Last Name</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_phone">Phone Number</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="plus_sign_out">Switch Google+ account</string>
+    <string name="plus_disconnect">Disconnect from Google+</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">Your password needs to be at least 5 characters</string>
+    <string name="error_invalid_username">Your username needs to be at least 5 characters</string>
+    <string name="error_confirm">Passwords do not match</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_login">Username/Password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="title_activity_user_photo">Profile Photo</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_get_started">Let\'s Get Started</string>
+
+
 </resources>

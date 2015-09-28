@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="white" type="color">#FFF</item>
+    <item name="white_pressed" type="color">#E0E0E0</item>
+
+    <item name="green500" type="color">#4CAF50</item>
+    <item name="green400" type="color">#66BB6A</item>
+
+    <item name="deep_orange500" type="color">#FF5722</item>
+    <item name="deep_orange400" type="color">#FF7043</item>
+
+    <item name="orange700" type="color">#F57C00</item>
+    <item name="orange600" type="color">#FB8C00</item>
+
+    <item name="red500" type="color">#F44336</item> 
+    <item name="red400" type="color">#EF5350</item> 
+
+    <item name="grey500" type="color">#9E9E9E</item> 
+    <item name="grey700" type="color">#616161</item> 
+    <item name="grey900" type="color">#212121</item>  
+
+    <item name="half_black" type="color">#b0000000</item> 
+
+    <item name="status_bar" type="color">#5a000000</item> 
+
+</resources>

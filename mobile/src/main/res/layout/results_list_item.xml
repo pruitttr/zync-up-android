@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="56dip"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="?android:attr/activatedBackgroundIndicator">
+    <ImageView
+            android:id="@android:id/icon"
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:src="@drawable/ic_contact_picture"
+            android:cropToPadding="true"
+            android:scaleType="centerCrop"
+            style="@style/ChipIconStyle"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
+    <LinearLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+        <TextView android:id="@android:id/title"
+                  android:alpha=".87"
+                  android:textSize="16sp"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:singleLine="true"
+                  android:ellipsize="end"
+                  style="@style/ChipTitleStyle" />
+    </LinearLayout>
+</LinearLayout>

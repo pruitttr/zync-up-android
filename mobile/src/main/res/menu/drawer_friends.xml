@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/section"
+            android:title="Zynced Friends">
+            <menu>
+
+                <item
+                    android:id="@+id/drawer_1"
+                    android:checked="true"
+                    android:icon="@drawable/avatar"
+                    android:title="Matt Wayne"/>
+
+                <item
+                    android:id="@+id/drawer_2"
+                    android:icon="@drawable/avatar"
+                    android:title="Ashley Chase"/>
+
+                <item
+                    android:id="@+id/drawer_3"
+                    android:icon="@drawable/avatar"
+                    android:title="Shane Kaster"/>
+            </menu>
+        </item>
+
+        <item
+            android:id="@+id/drawer_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings"/>
+        <item
+            android:id="@+id/drawer_help"
+            android:icon="@drawable/ic_help"
+            android:title="@string/help_feedback"/>
+
+    </group>
+
+</menu>

@@ -1,65 +1,198 @@
 package com.zync_up.zyncup;
 
-import android.support.v4.app.FragmentActivity;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MainActivity extends FragmentActivity {
+public class  MainActivity extends FragmentActivity
+        implements ConnectionCallbacks,OnConnectionFailedListener {
 
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private static final float DEFAULT_ZOOM_LEVEL = 15;
+
+    private GoogleMap map; // Might be null if Google Play services APK is not available.
+    private GoogleApiClient googleApiClient;
+    private FrameLayout tintLayout;
+    private DrawerLayout drawerLayout;
+    private ObjectAnimator tintAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setUpMapIfNeeded();
+
+        if (!isLoggedIn()) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        buildGoogleApiClient();
+
+        setupFab();
+
+        tintLayout = (FrameLayout) findViewById(R.id.tint_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout.setFitsSystemWindows(true);
+
+        SearchBar searchBar = (SearchBar) findViewById(R.id.searchbox);
+        searchBar.enableVoiceRecognition(this);
+
+        searchBar.setMenuListener(new SearchBar.MenuListener() {
+            @Override
+            public void onMenuClick() {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        searchBar.setSearchListener(new SearchBar.SearchListener() {
+            int tintColor = Color.parseColor("#B0000000");
+
+            @Override
+            public void onSearchOpened() {
+                tintAnimation = ObjectAnimator.ofInt(
+                        tintLayout,
+                        "backgroundColor",
+                        Color.TRANSPARENT,
+                        tintColor)
+                        .setDuration(300);
+                tintAnimation.setEvaluator(new ArgbEvaluator());
+                tintAnimation.start();
+                //TODO: close view when outside the searchbar is clicked.
+
+            }
+
+            @Override
+            public void onSearchClosed() {
+                tintAnimation.reverse();
+            }
+
+            @Override
+            public void onSearchTermChanged(String term) {
+
+            }
+
+            @Override
+            public void onSearch(String searchTerm) {
+                Toast.makeText(MainActivity.this, searchTerm + " Searched", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onSearchCleared() {
+                //Called when the clear button is clicked
+            }
+
+        });
+
+        map = ((MapFragment) getFragmentManager()
+                .findFragmentById(R.id.fragment_map))
+                .getMap();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        googleApiClient.connect();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setUpMapIfNeeded();
     }
 
-    /**
-     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-     * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mMap} is not null.
-     * <p/>
-     * If it isn't installed {@link SupportMapFragment} (and
-     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-     * install/update the Google Play services APK on their device.
-     * <p/>
-     * A user can return to this FragmentActivity after following the prompt and correctly
-     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-     * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-     * method in {@link #onResume()} to guarantee that it will be called.
-     */
-    private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-            // Check if we were successful in obtaining the map.
-            if (mMap != null) {
-                setUpMap();
-            }
+    protected synchronized void buildGoogleApiClient() {
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                googleApiClient);
+        if (lastLocation != null) {
+            LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+            //Move the camera instantly to hamburg with a zoom of 15.
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM_LEVEL));
+
+            // Zoom in, animating the camera.
+            map.animateCamera(CameraUpdateFactory.zoomTo(DEFAULT_ZOOM_LEVEL), 2000, null);
         }
     }
 
-    /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
-     * <p/>
-     * This should only be called once and when we are sure that {@link #mMap} is not null.
-     */
-    private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+    @Override
+    public void onConnectionSuspended(int cause) {
+        // The connection has been interrupted.
+        // Disable any UI components that depend on Google APIs
+        // until onConnected() is called.
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        // This callback is important for handling errors that
+        // may occur while attempting to connect with Google.
+        //
+        // More about this in the 'Handle Connection Failures' section.
+    }
+
+    private void setupFab() {
+        FloatingActionButton messageButton = (FloatingActionButton) findViewById(R.id.fab_message);
+        messageButton.setTitle("Message");
+        messageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sharedPreferences = getSharedPreferences("PREFS", MODE_PRIVATE);
+                sharedPreferences.edit().clear().apply();
+            }
+        });
+
+        FloatingActionButton zyncButton = (FloatingActionButton) findViewById(R.id.fab_zyncup);
+        zyncButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onStop() {
+        googleApiClient.disconnect();
+        super.onStop();
+    }
+
+    public boolean isLoggedIn(){
+        SharedPreferences sharedPreferences = getSharedPreferences("PREFS", MODE_PRIVATE);
+        return sharedPreferences != null && sharedPreferences.getBoolean("logged_in", false);
     }
 }

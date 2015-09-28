@@ -1,5 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="AppTheme" parent="android:Theme.Material.Light">
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowContentTransitions">true</item>
+
+        <!-- specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@android:transition/explode</item>
+        <item name="android:windowExitTransition">@android:transition/explode</item>
+
+        <!-- specify shared element transitions -->
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/change_image_transform</item>
+        <item name="android:windowSharedElementExitTransition">
+            @transition/change_image_transform</item>
+
     </style>
+
+    <style name="menu_labels_style">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <declare-styleable name="HamburgerView">
+        <attr name="line_color" format="color"/>
+        <attr name="scale" format="integer"/>
+        <attr name="transformation_duration" format="integer"/>
+        <attr name="pressed_duration" format="integer"/>
+        <attr name="stroke_width" format="integer"/>
+        <attr name="right_to_left" format="boolean"/>
+    </declare-styleable>
+
+    <style name="RecipientEditTextView" parent="@android:attr/autoCompleteTextViewStyle">
+        <item name="android:inputType">textEmailAddress|textMultiLine</item>
+        <item name="android:imeOptions">actionNext|flagNoFullscreen</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:dropDownVerticalOffset">-6dip</item>
+        <item name="android:dropDownHorizontalOffset">-16dip</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:lineSpacingExtra">@dimen/line_spacing_extra</item>
+        <item name="android:textAlignment" tools:ignore="NewApi">viewStart</item>
+        <item name="android:textDirection" tools:ignore="NewApi">locale</item>
+    </style>
+
+    <style name="ChipTitleStyle">
+        <item name="android:paddingLeft">@dimen/chip_title_padding_start</item>
+    </style>
+
+    <style name="ChipSubtitleStyle">
+        <item name="android:paddingLeft">@dimen/chip_subtitle_padding_start</item>
+    </style>
+
+    <style name="ChipIconStyle">
+        <item name="android:layout_marginRight">@dimen/chip_icon_margin_start</item>
+    </style>
+
+    <style name="TextLabel" parent="AppTheme">
+        //hint color And Label Color in False State
+        <item name="android:textColorHint">@color/grey900</item>
+        <item name="android:editTextColor">@color/grey900</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/grey900</item>
+        //Label color in True State And Bar Color False And True State
+        <item name="colorAccent">@color/grey900</item>
+        <item name="colorControlNormal">@color/grey900</item>
+        <item name="colorControlActivated">@color/grey900</item>
+    </style>
+
 </resources>
